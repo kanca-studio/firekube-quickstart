@@ -16,7 +16,7 @@ items:
           address: 10.0.0.25
           port: 22
         public:
-          address: 3.0.21.9
+          address: 54.254.6.48
           port: 22
 - apiVersion: cluster.k8s.io/v1alpha1
   kind: Machine
@@ -34,6 +34,6 @@ items:
           address: 10.0.0.26 
           port: 22
         public:
-          address: 54.251.161.29
+          address: 18.141.164.205
           port: 22
 kind: List
