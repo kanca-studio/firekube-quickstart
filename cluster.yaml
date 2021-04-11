@@ -1,34 +1,148 @@
-apiVersion: cluster.k8s.io/v1alpha3
+apiVersion: cluster.x-k8s.io/v1alpha3
 kind: Cluster
 metadata:
   name: example
 spec:
   clusterNetwork:
     services:
-      cidrBlocks: [10.0.0.0/16]
+      cidrBlocks:
+      - 10.0.0.0/16
     pods:
-      cidrBlocks: [192.168.0.0/16]
-    serviceDomain: cluster.local
-  providerSpec:
-    value:
-      apiVersion: baremetalproviderspec/v1alpha3
-      kind: BareMetalClusterProviderSpec
-      user: root
-      os:
-        files:
-        - source:
-            configmap: repo
-            key: kubernetes.repo
-          destination: /etc/yum.repos.d/kubernetes.repo
-        - source:
-            configmap: repo
-            key: docker-ce.repo
-          destination: /etc/yum.repos.d/docker-ce.repo
-        - source:
-            configmap: docker
-            key: daemon.json
-          destination: /etc/docker/daemon.json
-      cri:
-        kind: docker
-        package: docker-ce
-        version: 19.03.8
+      cidrBlocks:
+      - 192.168.0.0/16
+  infrastructureRef:
+    apiVersion: cluster.weave.works/v1alpha3
+    kind: ExistingInfraCluster
+    name: example
+---
+apiVersion: cluster.weave.works/v1alpha3
+kind: ExistingInfraCluster
+metadata:
+  name: example-provider
+spec:
+  user: root
+  controlPlaneMachineCount: "1"
+  workerMachineCount: "1"
+  cri:
+    kind: docker
+    package: docker-ce
+    version: 19.03.8
+  kubernetesVersion: 1.18.15
+  os:
+    files:
+    - destination: /etc/yum.repos.d/kubernetes.repo
+      source:
+        configmap: repo
+        contents: |
+          [kubernetes]
+          name=Kubernetes
+          baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+          enabled=1
+          gpgcheck=1
+          repo_gpgcheck=1
+          gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+          exclude=kube*
+        key: kubernetes.repo
+    - destination: /etc/yum.repos.d/docker-ce.repo
+      source:
+        configmap: repo
+        contents: |
+          [docker-ce-stable]
+          name=Docker CE Stable - $basearch
+          baseurl=https://download.docker.com/linux/centos/7/$basearch/stable
+          enabled=1
+          gpgcheck=1
+          gpgkey=https://download.docker.com/linux/centos/gpg
+
+          [docker-ce-stable-debuginfo]
+          name=Docker CE Stable - Debuginfo $basearch
+          baseurl=https://download.docker.com/linux/centos/7/debug-$basearch/stable
+          enabled=0
+          gpgcheck=1
+          gpgkey=https://download.docker.com/linux/centos/gpg
+
+          [docker-ce-stable-source]
+          name=Docker CE Stable - Sources
+          baseurl=https://download.docker.com/linux/centos/7/source/stable
+          enabled=0
+          gpgcheck=1
+          gpgkey=https://download.docker.com/linux/centos/gpg
+
+          [docker-ce-edge]
+          name=Docker CE Edge - $basearch
+          baseurl=https://download.docker.com/linux/centos/7/$basearch/edge
+          enabled=0
+          gpgcheck=1
+          gpgkey=https://download.docker.com/linux/centos/gpg
+
+          [docker-ce-edge-debuginfo]
+          name=Docker CE Edge - Debuginfo $basearch
+          baseurl=https://download.docker.com/linux/centos/7/debug-$basearch/edge
+          enabled=0
+          gpgcheck=1
+          gpgkey=https://download.docker.com/linux/centos/gpg
+
+          [docker-ce-edge-source]
+          name=Docker CE Edge - Sources
+          baseurl=https://download.docker.com/linux/centos/7/source/edge
+          enabled=0
+          gpgcheck=1
+          gpgkey=https://download.docker.com/linux/centos/gpg
+
+          [docker-ce-test]
+          name=Docker CE Test - $basearch
+          baseurl=https://download.docker.com/linux/centos/7/$basearch/test
+          enabled=0
+          gpgcheck=1
+          gpgkey=https://download.docker.com/linux/centos/gpg
+
+          [docker-ce-test-debuginfo]
+          name=Docker CE Test - Debuginfo $basearch
+          baseurl=https://download.docker.com/linux/centos/7/debug-$basearch/test
+          enabled=0
+          gpgcheck=1
+          gpgkey=https://download.docker.com/linux/centos/gpg
+
+          [docker-ce-test-source]
+          name=Docker CE Test - Sources
+          baseurl=https://download.docker.com/linux/centos/7/source/test
+          enabled=0
+          gpgcheck=1
+          gpgkey=https://download.docker.com/linux/centos/gpg
+
+          [docker-ce-nightly]
+          name=Docker CE Nightly - $basearch
+          baseurl=https://download.docker.com/linux/centos/7/$basearch/nightly
+          enabled=0
+          gpgcheck=1
+          gpgkey=https://download.docker.com/linux/centos/gpg
+
+          [docker-ce-nightly-debuginfo]
+          name=Docker CE Nightly - Debuginfo $basearch
+          baseurl=https://download.docker.com/linux/centos/7/debug-$basearch/nightly
+          enabled=0
+          gpgcheck=1
+          gpgkey=https://download.docker.com/linux/centos/gpg
+
+          [docker-ce-nightly-source]
+          name=Docker CE Nightly - Sources
+          baseurl=https://download.docker.com/linux/centos/7/source/nightly
+          enabled=0
+          gpgcheck=1
+          gpgkey=https://download.docker.com/linux/centos/gpg
+        key: docker-ce.repo
+    - destination: /etc/docker/daemon.json
+      source:
+        configmap: docker
+        contents: |
+          {
+            "log-driver": "json-file",
+            "log-opts": {
+              "max-size": "100m"
+            },
+            "exec-opts": [
+              "native.cgroupdriver=cgroupfs"
+            ]
+          }
+        key: daemon.json
+

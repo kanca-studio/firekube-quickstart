@@ -1,39 +1,53 @@
-apiVersion: v1
-kind: List
-items:
-- apiVersion: cluster.k8s.io/v1alpha3
-  kind: Machine
-  metadata:
-    labels:
-      set: master
-    name: master-0
-    namespace: weavek8sops
-  spec:
-    providerSpec:
-      value:
-        apiVersion: baremetalproviderspec/v1alpha3
-        kind: BareMetalMachineProviderSpec
-        private:
-          address: 10.0.0.25
-          port: 22
-        public:
-          address: 13.229.104.32
-          port: 22
-- apiVersion: cluster.k8s.io/v1alpha3
-  kind: Machine
-  metadata:
-    labels:
-      set: worker
-    name: worker-0
-    namespace: weavek8sops
-  spec:
-    providerSpec:
-      value:
-        apiVersion: baremetalproviderspec/v1alpha3
-        kind: BareMetalMachineProviderSpec
-        private:
-          address: 10.0.0.26 
-          port: 22
-        public:
-          address: 18.140.62.230
-          port: 22
+apiVersion: cluster.x-k8s.io/v1alpha3
+kind: Machine
+metadata:
+  labels:
+    set: master
+  name: master-1
+spec:
+  clusterName: example
+  bootstrap: {}
+  version: 1.18.15
+  infrastructureRef:
+    apiVersion: cluster.weave.works/v1alpha3
+    kind: ExistingInfraMachine
+    name: master-1
+---
+apiVersion: cluster.weave.works/v1alpha3
+kind: ExistingInfraMachine
+metadata:
+  name: master-1
+spec:
+  private:
+    address: 10.0.0.25
+    port: 22
+  public:
+    address: 54.151.251.45
+    port: 2222
+---
+apiVersion: cluster.x-k8s.io/v1alpha3
+kind: Machine
+metadata:
+  labels:
+    set: worker
+  name: worker-1
+spec:
+  clusterName: example
+  bootstrap: {}
+  version: 1.18.15
+  infrastructureRef:
+    apiVersion: cluster.weave.works/v1alpha3
+    kind: ExistingInfraMachine
+    name: worker-1
+---
+apiVersion: cluster.weave.works/v1alpha3
+kind: ExistingInfraMachine
+metadata:
+  name: worker-1
+spec:
+  private:
+    address: 10.0.0.26 
+    port: 22
+  public:
+    address: 18.140.62.230
+    port: 2223
