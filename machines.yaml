@@ -17,7 +17,7 @@ items:
           address: 10.0.0.25
           port: 22
         public:
-          address: 18.141.180.248
+          address: 54.169.88.158
           port: 22
 - apiVersion: cluster.k8s.io/v1alpha1
   kind: Machine
