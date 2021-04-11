@@ -1,4 +1,4 @@
-apiVersion: cluster.k8s.io/v1alpha1
+apiVersion: cluster.k8s.io/v1alpha3
 kind: Cluster
 metadata:
   name: example
@@ -11,7 +11,7 @@ spec:
     serviceDomain: cluster.local
   providerSpec:
     value:
-      apiVersion: baremetalproviderspec/v1alpha1
+      apiVersion: baremetalproviderspec/v1alpha3
       kind: BareMetalClusterProviderSpec
       user: root
       os:
