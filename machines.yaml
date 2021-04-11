@@ -1,5 +1,4 @@
 apiVersion: v1
-kind: List
 items:
 - apiVersion: cluster.k8s.io/v1alpha1
   kind: Machine
@@ -14,10 +13,10 @@ items:
         apiVersion: baremetalproviderspec/v1alpha1
         kind: BareMetalMachineProviderSpec
         private:
-          address: 10.0.0.25
+          address: 
           port: 22
         public:
-          address: 52.221.203.175
+          address: 
           port: 22
 - apiVersion: cluster.k8s.io/v1alpha1
   kind: Machine
@@ -32,8 +31,9 @@ items:
         apiVersion: baremetalproviderspec/v1alpha1
         kind: BareMetalMachineProviderSpec
         private:
-          address: 10.0.0.26 
+          address: 
           port: 22
         public:
-          address: 18.141.198.5
+          address: 
           port: 22
+kind: List
