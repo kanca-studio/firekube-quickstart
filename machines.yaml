@@ -22,7 +22,7 @@ spec:
     address: 10.0.0.25
     port: 22
   public:
-    address: 13.213.1.19
+    address: 52.221.199.152
     port: 22
 ---
 apiVersion: cluster.x-k8s.io/v1alpha3
