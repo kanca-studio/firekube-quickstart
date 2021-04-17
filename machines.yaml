@@ -22,7 +22,7 @@ spec:
     address: 10.0.0.25
     port: 22
   public:
-    address: 54.169.34.2
+    address: 3.1.222.127
     port: 22
 
 ---
@@ -50,7 +50,7 @@ spec:
     address: 10.0.0.26 
     port: 22
   public:
-    address: 18.136.107.163
+    address: 52.221.181.4
     port: 22
 
 ---
@@ -78,5 +78,5 @@ spec:
     address: 10.0.0.27 
     port: 22
   public:
-    address: 54.179.178.77
+    address: 54.151.187.27
     port: 22
