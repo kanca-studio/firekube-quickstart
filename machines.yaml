@@ -22,7 +22,7 @@ spec:
     address: 10.0.0.25
     port: 22
   public:
-    address: 54.169.164.161
+    address: 18.141.224.141
     port: 22
 ---
 apiVersion: cluster.x-k8s.io/v1alpha3
@@ -30,7 +30,7 @@ kind: Machine
 metadata:
   labels:
     set: worker
-  name: worker-1
+  name: worker-10.0.0.26
 spec:
   clusterName: example
   bootstrap: {}
@@ -38,16 +38,43 @@ spec:
   infrastructureRef:
     apiVersion: cluster.weave.works/v1alpha3
     kind: ExistingInfraMachine
-    name: worker-1
+    name: worker-10.0.0.26
 ---
 apiVersion: cluster.weave.works/v1alpha3
 kind: ExistingInfraMachine
 metadata:
-  name: worker-1
+  name: worker-10.0.0.26
 spec:
   private:
-    address: 10.0.0.26 
+    address: .0.0.26
     port: 22
   public:
-    address: 18.141.173.255
+    address: .0.0.26
+    port: 22
+---
+apiVersion: cluster.x-k8s.io/v1alpha3
+kind: Machine
+metadata:
+  labels:
+    set: worker
+  name: worker-10.0.0.27
+spec:
+  clusterName: example
+  bootstrap: {}
+  version: 1.18.15
+  infrastructureRef:
+    apiVersion: cluster.weave.works/v1alpha3
+    kind: ExistingInfraMachine
+    name: worker-10.0.0.27
+---
+apiVersion: cluster.weave.works/v1alpha3
+kind: ExistingInfraMachine
+metadata:
+  name: worker-10.0.0.27
+spec:
+  private:
+    address: .0.0.27
+    port: 22
+  public:
+    address: .0.0.27
     port: 22
